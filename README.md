@@ -14,6 +14,16 @@ pnpm dev
 bun dev
 ```
 
+Next, fetch env variables from Vercel:
+
+```bash
+vercel env pull .env.development.local
+```
+
+> [!NOTE]
+> For more information, please also refer to [Server Uploads with Vercel Blob](https://vercel.com/docs/storage/vercel-blob/server-upload).
+
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
