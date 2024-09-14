@@ -1,3 +1,5 @@
+"use client";
+
 import Message from "@/components/file/Message";
 import UploadFileForm from "@/components/file/UploadFileForm";
 
