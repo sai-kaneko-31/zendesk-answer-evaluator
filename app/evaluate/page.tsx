@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 import validateBlobUrl from "@/components/file/_commands/validateBlobUrl";
@@ -30,4 +30,12 @@ const Evaluate = () => {
         </div>
     );
 }
-export default Evaluate;
+
+const EvaluatePage = () => {
+    return (
+        <Suspense fallback={<p>ロード中...</p>}>
+            <Evaluate />
+        </Suspense>
+    );
+}
+export default EvaluatePage;
