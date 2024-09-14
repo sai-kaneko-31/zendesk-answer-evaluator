@@ -1,37 +1,37 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-import { uploadFile } from "@/components/file/_commands/uploadFile";
+import uploadFile from "@/components/file/_commands/uploadFile";
+import validateSelectedFiles from "@/components/file/_commands/validateSelectedFiles";
 
-export function UploadForm() {
-    const [file, setFile] = useState<File | null>(null);
+const UploadFileForm = () => {
     const [errorMessage, setErrorMessage] = useState("");
+    const router = useRouter();
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (errorMessage) {
-            return;
+        try {
+            if (errorMessage.length !== 0) return;
+            await uploadFile(new FormData(event.currentTarget));
+            router.push("/evaluate");;
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                setErrorMessage(e.message);
+            }
         }
-        if (!file || file.size < 0) {
-            setErrorMessage("先にファイルを選択してください");
-            return;
-        }
-        uploadFile(new FormData(event.currentTarget));
-
     }
+
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (!event.target.files) {
-            setErrorMessage("空のファイルが指定されました");
-            return;
+        try {
+            validateSelectedFiles(event.target.files);
+            setErrorMessage("");
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                setErrorMessage(e.message);
+            }
         }
-        const selectedFile: File = event.target.files[0];
-        if (selectedFile.type !== "application/json") {
-            setErrorMessage("JSONファイルを指定してください");
-            return;
-        }
-        setFile(selectedFile);
-        setErrorMessage("");
     };
     return (
         <form className="flex flex-col" onSubmit={handleSubmit}>
@@ -45,3 +45,4 @@ export function UploadForm() {
         </form>
     );
 }
+export default UploadFileForm;
