@@ -1,18 +1,11 @@
 "use server";
-import * as fs from "node:fs";
-import * as path from "node:path";
+import { put } from '@vercel/blob';
 
-const uploadFile = async (formData: FormData) => {
+const uploadFile = async (formData: FormData): Promise<string> => {
     const file = formData.get("file") as File;
-    if (file && file.size > 0) {
-        const data = await file.arrayBuffer();
-        const buffer = Buffer.from(data);
-        const filePath = path.resolve(
-            process.cwd(),
-            "./uploads",
-            `${crypto.randomUUID()}.${file.name.split(".").pop()}`,
-        );
-        await fs.writeFileSync(filePath, buffer);
-    }
+    const blob = await put(file.name, file, {
+        access: 'public',
+    });
+    return blob.url;
 }
 export default uploadFile;

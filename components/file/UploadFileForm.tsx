@@ -14,8 +14,10 @@ const UploadFileForm = () => {
         event.preventDefault();
         try {
             if (errorMessage.length !== 0) return;
-            await uploadFile(new FormData(event.currentTarget));
-            router.push("/evaluate");;
+            const blobUrl = await uploadFile(new FormData(event.currentTarget));
+            const evaluatePageUrl = new URL('/evaluate', window.location.origin);
+            evaluatePageUrl.searchParams.append("blob_url", blobUrl);
+            router.push(evaluatePageUrl.toString());
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setErrorMessage(e.message);
