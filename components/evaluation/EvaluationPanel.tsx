@@ -4,10 +4,10 @@ import { useMemo, useState } from "react";
 
 import BadButton from "./BadButton";
 import GoodButton from "./GoodButton";
-import DownloadButton from "./DownloadButton";
 import TargetContent from "./TargetContent";
 import updateVotedContent from "./_commands/updateVotedContent";
 import goNextContent from "./_commands/goNextContent";
+import DownloadPanel from "./DownloadPanel";
 
 export class Content {
     constructor(public messages: string[]) { }
@@ -73,7 +73,7 @@ const EvaluationPanel = ({ originalContent }: EvaluationPanelProps) => {
             )}
             {isDone && (
                 <div className="flex justify-center mt-4">
-                    <DownloadButton votedContents={votedContents} />
+                    <DownloadPanel votedContents={votedContents} />
                 </div>
             )}
         </div>
